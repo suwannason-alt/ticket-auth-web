@@ -1,0 +1,22 @@
+{
+    "HomePage": {
+        "title": "Authentication",
+        "subTitle": "Login into Open ticket system",
+        "signIn": {
+            "title": "Sign In",
+            "welcomeBack": "Welcome back!",
+            "description": "Sign in to your account",
+            "buttonText": "Sign in",
+            "enterPassword": "Enter your password",
+            "labelPassword": "Password",
+            "enterEmail": "Enter your email",
+            "labelEmail": "Email",
+            "forgotPassword": "Forgot Password?",
+            "or": "Or",
+            "loginLineButtonText": "Sign in with LINE"
+        },
+        "signUp": {
+            "title": "Sign Up"
+        }
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "HomePage": {
+        "title": "ยืนยันตัวตน",
+        "subTitle": "เข้าสู่ระบบตั๋วเปิด",
+        "signIn": {
+            "title": "เข้าสู่ระบบ",
+            "welcomeBack": "ยินดีต้อนรับ",
+            "description": "เข้าสู่ระบบบัญชีของคุณ",
+            "buttonText": "เข้าสู่ระบบ",
+            "enterPassword": "กรอกรหัสผ่านของคุณ",
+            "labelPassword": "รหัสผ่าน",
+            "enterEmail": "กรอกอีเมล",
+            "labelEmail": "อีเมล",
+            "forgotPassword": "ลืมรหัสผ่าน?",
+            "or": "หรือ",
+            "loginLineButtonText": "เข้าสู่ระบบด้วย LINE"
+        },
+        "signUp": {
+            "title": "สมัครสมาชิก"
+        }
+    }
+}
