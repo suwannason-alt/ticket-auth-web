@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -10,15 +10,21 @@ import {
   Button,
   Avatar,
   Chip,
+  Menu,
+  MenuItem,
+  Badge,
 } from '@mui/material';
 import {
   Brightness4,
   Brightness7,
+  LanguageOutlined,
   Login,
   PersonAdd,
 } from '@mui/icons-material';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { useAppSelector } from '@/lib/store';
+import { useTranslations, useLocale } from 'next-intl';
+import Cookies from 'js-cookie';
 
 interface HeaderProps {
   onLoginClick?: () => void;
@@ -27,7 +33,26 @@ interface HeaderProps {
 
 export default function Header({ onLoginClick, onRegisterClick }: HeaderProps) {
   const { mode, toggleTheme } = useTheme();
+  const locale = useLocale();
+
   const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+  const [languageAnchorEl, setLanguageAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleLanguageChange = (lang: string) => {
+    if (locale !== lang) {
+      Cookies.set('locale', lang);
+      window.location.reload()
+    } else {
+      setLanguageAnchorEl(null);
+    }
+
+  }
+  const handleLanguageMenuClose = () => {
+    setLanguageAnchorEl(null);
+  };
+    const handleLanguageClick = (event: React.MouseEvent<HTMLElement>) => {
+    setLanguageAnchorEl(event.currentTarget);
+  }
 
   return (
     <AppBar position="static" elevation={1}>
@@ -82,6 +107,27 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderProps) {
               </Button>
             </>
           )}
+            <IconButton color={'inherit'} sx={{ mr: 1 }} onClick={handleLanguageClick}>
+              <Badge badgeContent={locale.toUpperCase()}>
+                <LanguageOutlined />
+              </Badge>
+            </IconButton>
+          <Menu
+            anchorEl={languageAnchorEl}
+            open={Boolean(languageAnchorEl)}
+            onClose={handleLanguageMenuClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right'
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right'
+            }}
+          >
+            <MenuItem onClick={() => handleLanguageChange('th')}>TH</MenuItem>
+            <MenuItem onClick={() => handleLanguageChange('en')}>EN</MenuItem>
+          </Menu>
 
           <IconButton
             color="inherit"

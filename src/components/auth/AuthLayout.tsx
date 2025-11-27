@@ -75,7 +75,7 @@ export default function AuthLayout() {
         >
           <CircularProgress size={48} sx={{ mb: 2 }} />
           <Typography variant="h6" color="text.secondary">
-            Initializing Authentication...
+            {t('loadAuthenticating')}
           </Typography>
         </Box>
       </Container>
@@ -88,14 +88,14 @@ export default function AuthLayout() {
       <Box>
         <Header />
         <Container maxWidth="lg" sx={{ py: 4 }}>
-          <Fade in={true} timeout={500}>
+          <Fade in={true} timeout={1500}>
             <Box>
               <Box sx={{ textAlign: 'center', mb: 4 }}>
                 <Typography variant="h3" component="h1" gutterBottom>
-                  Welcome
+                  {t('Head.welcome')}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  You are successfully authenticated
+                  {t('Head.loginSuccess')}
                 </Typography>
               </Box>
               <ProfileCard />
@@ -170,11 +170,11 @@ export default function AuthLayout() {
         </Box>
 
         {/* Footer */}
-        <Box sx={{ mt: 4, textAlign: 'center' }}>
+        {/* <Box sx={{ mt: 4, textAlign: 'center' }}>
           <Typography variant="body2" color="text.secondary">
             Built with Next.js, Material UI, Redux Toolkit & LINE LIFF
           </Typography>
-        </Box>
+        </Box> */}
       </Box>
     </Container>
   );

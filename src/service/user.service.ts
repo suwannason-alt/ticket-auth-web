@@ -1,7 +1,7 @@
 
 
-import unauthen from '../lib/axios/unauthenticate';
-import authenticated from '../lib/axios/authenticate';
+import unauthen from '@/lib/axios/unauthenticate';
+import authenticated from '@/lib/axios/authenticate';
 import Cookies from 'js-cookie';
 
 export async function login(username: string, password: string) {

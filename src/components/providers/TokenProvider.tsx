@@ -8,9 +8,8 @@ import { setUser } from '@/lib/store/authSlice';
 
 export default function TokenProvider({ children }: { children: React.ReactNode }) {
     const dispatch = useAppDispatch();
-
     const token = Cookies.get('token');
-
+    
     useEffect(() => {
         const getProfile = async () => {
             const user = await profile();

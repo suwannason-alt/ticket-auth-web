@@ -2,6 +2,7 @@
     "HomePage": {
         "title": "ยืนยันตัวตน",
         "subTitle": "เข้าสู่ระบบตั๋วเปิด",
+        "loadAuthenticating": "กำลังเริ่มต้นการยืนยันตัวตน...",
         "signIn": {
             "title": "เข้าสู่ระบบ",
             "welcomeBack": "ยินดีต้อนรับ",
@@ -17,6 +18,31 @@
         },
         "signUp": {
             "title": "สมัครสมาชิก"
+        },
+        "signOut": {
+            "title": "ออกจากระบบ",
+            "confirmation": "คุณแน่ใจหรือว่าต้องการออกจากระบบบัญชีของคุณ?",
+            "cancel": "ยกเลิก",
+            "confirm": "ยืนยัน"
+        },
+        "Head": {
+            "welcome": "ยินดีต้อนรับ",
+            "loginSuccess": "คุณเข้าสู่ระบบสำเร็จแล้ว"
+        },
+        "profileCard": {
+            "profileInfomation": "ข้อมูลโปรไฟล์",
+            "displayName": "ชื่อที่แสดง",
+            "email": "อีเมล",
+            "line": "ไลน์"
+        },
+        "environment": {
+            "lineEnvironment": "สภาพแวดล้อมของ LINE",
+            "selectCompany": "เลือกบริษัท",
+            "available": "บริษัทที่มีอยู่"
+        },
+        "note": {
+            "noteTitle": "หมายเหตุ",
+            "noteContent": "หากไม่พบบริการใด ๆ โปรดติดต่อผู้ดูแลระบบของคุณเพื่อให้สิทธิ์บริษัทใดก็ได้"
         }
     }
 }

@@ -138,190 +138,194 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
 
   return (
     <Box sx={{ p: 4 }}>
-        <Box sx={{ textAlign: 'center', mb: 3 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            Create Account
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Join us today and get started
-          </Typography>
-        </Box>
+      <Box sx={{ textAlign: 'center', mb: 3 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Create Account
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          Join us today and get started
+        </Typography>
+      </Box>
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }} onClose={() => dispatch(clearError())}>
-            {error}
-          </Alert>
-        )}
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }} onClose={() => dispatch(clearError())}>
+          {error}
+        </Alert>
+      )}
 
-        <form onSubmit={handleRegister}>
-          <TextField
-            fullWidth
-            label="Display Name"
-            value={formData.displayName}
-            onChange={handleInputChange('displayName')}
-            error={!!errors.displayName}
-            helperText={errors.displayName}
-            margin="normal"
-            InputProps={{
+      <form onSubmit={handleRegister}>
+        <TextField
+          fullWidth
+          label="Display Name"
+          value={formData.displayName}
+          onChange={handleInputChange('displayName')}
+          error={!!errors.displayName}
+          helperText={errors.displayName}
+          margin="normal"
+          slotProps={{
+            input: {
               startAdornment: (
                 <InputAdornment position="start">
                   <Person color="action" />
                 </InputAdornment>
               ),
-            }}
-            placeholder="Enter your display name"
-          />
-
-          <TextField
-            fullWidth
-            label="Email"
-            type="email"
-            value={formData.email}
-            onChange={handleInputChange('email')}
-            error={!!errors.email}
-            helperText={errors.email}
-            margin="normal"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Email color="action" />
-                </InputAdornment>
-              ),
-            }}
-            placeholder="Enter your email"
-          />
-
-          <TextField
-            fullWidth
-            label="Password"
-            type={showPassword ? 'text' : 'password'}
-            value={formData.password}
-            onChange={handleInputChange('password')}
-            error={!!errors.password}
-            helperText={errors.password}
-            margin="normal"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Lock color="action" />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={togglePasswordVisibility}
-                    edge="end"
-                    aria-label="toggle password visibility"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            placeholder="Create a strong password"
-          />
-
-          <TextField
-            fullWidth
-            label="Confirm Password"
-            type={showConfirmPassword ? 'text' : 'password'}
-            value={formData.confirmPassword}
-            onChange={handleInputChange('confirmPassword')}
-            error={!!errors.confirmPassword}
-            helperText={errors.confirmPassword}
-            margin="normal"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Lock color="action" />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={toggleConfirmPasswordVisibility}
-                    edge="end"
-                    aria-label="toggle confirm password visibility"
-                  >
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            placeholder="Confirm your password"
-          />
-
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={formData.agreeToTerms}
-                onChange={handleInputChange('agreeToTerms')}
-                name="agreeToTerms"
-                color="primary"
-              />
             }
-            label={
-              <Typography variant="body2">
-                I agree to the{' '}
-                <Button variant="text" size="small" sx={{ textTransform: 'none', p: 0, minWidth: 'auto' }}>
-                  Terms of Service
-                </Button>
-                {' '}and{' '}
-                <Button variant="text" size="small" sx={{ textTransform: 'none', p: 0, minWidth: 'auto' }}>
-                  Privacy Policy
-                </Button>
-              </Typography>
-            }
-            sx={{ mt: 1, alignItems: 'flex-start' }}
-          />
-          {errors.agreeToTerms && (
-            <Typography variant="caption" color="error" sx={{ display: 'block', mt: 0.5 }}>
-              {errors.agreeToTerms}
-            </Typography>
-          )}
-
-          <Box sx={{ mt: 3, mb: 2 }}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              size="large"
-              disabled={isLoading}
-              sx={{ py: 1.5 }}
-            >
-              {isLoading ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                'Create Account'
-              )}
-            </Button>
-          </Box>
-        </form>
-
-        <Divider sx={{ my: 2 }}>
-          <Typography variant="body2" color="text.secondary">
-            OR
-          </Typography>
-        </Divider>
-
-        <Button
-          fullWidth
-          variant="outlined"
-          size="large"
-          onClick={handleLineLogin}
-          disabled={isLoading}
-          sx={{
-            py: 1.5,
-            borderColor: '#00C300',
-            color: '#00C300',
-            '&:hover': {
-              borderColor: '#00A000',
-              backgroundColor: '#f0fff0',
-            },
           }}
-        >
-          Sign up with LINE
-        </Button>
+          placeholder="Enter your display name"
+        />
+
+        <TextField
+          fullWidth
+          label="Email"
+          type="email"
+          value={formData.email}
+          onChange={handleInputChange('email')}
+          error={!!errors.email}
+          helperText={errors.email}
+          margin="normal"
+          slotProps={{
+            input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <Email color="action" />
+              </InputAdornment>
+            ),
+            }
+          }}
+          placeholder="Enter your email"
+        />
+
+        <TextField
+          fullWidth
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          value={formData.password}
+          onChange={handleInputChange('password')}
+          error={!!errors.password}
+          helperText={errors.password}
+          margin="normal"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Lock color="action" />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={togglePasswordVisibility}
+                  edge="end"
+                  aria-label="toggle password visibility"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          placeholder="Create a strong password"
+        />
+
+        <TextField
+          fullWidth
+          label="Confirm Password"
+          type={showConfirmPassword ? 'text' : 'password'}
+          value={formData.confirmPassword}
+          onChange={handleInputChange('confirmPassword')}
+          error={!!errors.confirmPassword}
+          helperText={errors.confirmPassword}
+          margin="normal"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Lock color="action" />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={toggleConfirmPasswordVisibility}
+                  edge="end"
+                  aria-label="toggle confirm password visibility"
+                >
+                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          placeholder="Confirm your password"
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={formData.agreeToTerms}
+              onChange={handleInputChange('agreeToTerms')}
+              name="agreeToTerms"
+              color="primary"
+            />
+          }
+          label={
+            <Typography variant="body2">
+              I agree to the{' '}
+              <Button variant="text" size="small" sx={{ textTransform: 'none', p: 0, minWidth: 'auto' }}>
+                Terms of Service
+              </Button>
+              {' '}and{' '}
+              <Button variant="text" size="small" sx={{ textTransform: 'none', p: 0, minWidth: 'auto' }}>
+                Privacy Policy
+              </Button>
+            </Typography>
+          }
+          sx={{ mt: 1, alignItems: 'flex-start' }}
+        />
+        {errors.agreeToTerms && (
+          <Typography variant="caption" color="error" sx={{ display: 'block', mt: 0.5 }}>
+            {errors.agreeToTerms}
+          </Typography>
+        )}
+
+        <Box sx={{ mt: 3, mb: 2 }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            size="large"
+            disabled={isLoading}
+            sx={{ py: 1.5 }}
+          >
+            {isLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              'Create Account'
+            )}
+          </Button>
+        </Box>
+      </form>
+
+      <Divider sx={{ my: 2 }}>
+        <Typography variant="body2" color="text.secondary">
+          OR
+        </Typography>
+      </Divider>
+
+      <Button
+        fullWidth
+        variant="outlined"
+        size="large"
+        onClick={handleLineLogin}
+        disabled={isLoading}
+        sx={{
+          py: 1.5,
+          borderColor: '#00C300',
+          color: '#00C300',
+          '&:hover': {
+            borderColor: '#00A000',
+            backgroundColor: '#f0fff0',
+          },
+        }}
+      >
+        Sign up with LINE
+      </Button>
 
 
     </Box>

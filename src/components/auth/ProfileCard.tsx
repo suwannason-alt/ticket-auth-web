@@ -27,11 +27,13 @@ import { useAppDispatch, useAppSelector } from '@/lib/store';
 import { logout } from '@/lib/store/authSlice';
 import { getLiffEnvironment } from '@/lib/liff';
 import DemoFeatures from '@/components/demo/DemoFeatures';
+import { useTranslations } from 'next-intl';
 
 export default function ProfileCard() {
   const dispatch = useAppDispatch();
   const { user, isLoading } = useAppSelector((state) => state.auth);
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+  const t = useTranslations('HomePage')
 
   const handleLogout = async () => {
     try {
@@ -94,13 +96,13 @@ export default function ProfileCard() {
 
           <Box sx={{ textAlign: 'left', mb: 3 }}>
             <Typography variant="h6" gutterBottom>
-              Profile Information
+              {t('profileCard.profileInfomation')}
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
               <Person sx={{ mr: 1, color: 'text.secondary' }} />
               <Typography variant="body2">
-                <strong>Display name:</strong> {user.displayName}
+                <strong>{t('profileCard.displayName')}:</strong> {user.displayName}
               </Typography>
             </Box>
 
@@ -108,14 +110,14 @@ export default function ProfileCard() {
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <Email sx={{ mr: 1, color: 'text.secondary' }} />
                 <Typography variant="body2">
-                  <strong>Email:</strong> {user.email}
+                  <strong>{t('profileCard.email')}:</strong> {user.email}
                 </Typography>
               </Box>
             )}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
               <MessageTwoTone sx={{ mr: 1, color: 'text.secondary' }} />
               <Typography variant="body2">
-                <strong>Line:</strong> {`LINE User ID not available`}
+                <strong>{t('profileCard.line')}:</strong> {`LINE User ID not available`}
               </Typography>
               <Settings sx={{ color: 'secondary.dark', cursor: 'pointer' }} />
             </Box>
@@ -150,12 +152,11 @@ export default function ProfileCard() {
             disabled={isLoading}
             sx={{ mt: 1 }}
           >
-            Sign Out
+            {t('signOut.title')}
           </Button>
         </CardContent>
       </Card>
 
-      {/* Demo Features */}
       <DemoFeatures />
 
       <Dialog
@@ -165,11 +166,11 @@ export default function ProfileCard() {
         fullWidth
       >
         <DialogTitle>
-          Confirm Logout
+          {t('signOut.title')}
         </DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to sign out of your account?
+            {t('signOut.confirmation')}
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -177,7 +178,7 @@ export default function ProfileCard() {
             onClick={() => setShowLogoutDialog(false)}
             disabled={isLoading}
           >
-            Cancel
+            {t('signOut.cancel')}
           </Button>
           <Button
             onClick={handleLogout}
@@ -185,7 +186,7 @@ export default function ProfileCard() {
             color="error"
             disabled={isLoading}
           >
-            Sign Out
+            {t('signOut.confirm')}
           </Button>
         </DialogActions>
       </Dialog>

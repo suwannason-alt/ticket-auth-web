@@ -7,7 +7,7 @@ const nextConfig = {
     return [
       {
         source: '/admin/:path*',
-        destination: 'http://localhost:4000/admin/:path*',
+        destination: 'http://localhost:3040/admin/:path*',
       },
 
       {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import getENV from '../../app/env';
+import getENV from '@/app/env';
 import Cookies from 'js-cookie';
 
 const TOKEN_COOKIE_KEY = 'token';
@@ -61,7 +61,7 @@ export default async function authenticated() {
     async function refreshToken() {
         try {
             const token = Cookies.get(TOKEN_COOKIE_KEY);
-            const refreshTokenResponse = await axios.post(`${credentialAPI}/api/v1/credential/refresh`, {
+            const refreshTokenResponse = await axios.patch(`${credentialAPI}/api/v1/credential/refresh`, {
                 refreshToken: Cookies.get(REFRESH_COKIE_KEY)
             }, {
                 headers: {
@@ -73,7 +73,7 @@ export default async function authenticated() {
             Cookies.remove(TOKEN_COOKIE_KEY);
             Cookies.remove(REFRESH_COKIE_KEY);
             if (typeof window !== 'undefined') {
-                 window.location.href = '/login'
+                 window.location.href = '/'
             }
             throw error;
         }
@@ -93,6 +93,7 @@ export default async function authenticated() {
                 const newToken = newAccessTokenData.data.token;
                 
                 Cookies.set(TOKEN_COOKIE_KEY, newToken);
+                Cookies.set(REFRESH_COKIE_KEY, newAccessTokenData.data.refreshToken);
                 
                 originalRequest.headers['Authorization'] = 'Bearer ' + newToken;
                 
