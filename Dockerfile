@@ -1,4 +1,4 @@
-FROM node:22.15.1 AS deps
+FROM node:22-alpine AS deps
 
 RUN mkdir -p /app
 
@@ -14,7 +14,7 @@ WORKDIR /app
 COPY . .
 RUN yarn build
 
-FROM node:22.15.1
+FROM node:22-alpine
 ENV NODE_ENV=production
 WORKDIR /app
 
