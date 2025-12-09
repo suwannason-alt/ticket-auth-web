@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 const TOKEN_COOKIE_KEY = 'token';
 const REFRESH_COKIE_KEY = 'refreshToken'
-const REFRESH_TOKEN_PATH = '/api/v1/user/refresh'
+const REFRESH_TOKEN_PATH = '/api/v1/credential/refresh'
 
 let cachedEnv: any = null;
 let envPromise: any = null;
