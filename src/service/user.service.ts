@@ -36,13 +36,3 @@ export async function permissions() {
         return error.response || error.message
     }
 }
-
-export async function company() {
-    try {
-        const instance = await authenticated()
-        const response = await instance.get(`/api/v1/company`)
-        return response.data;
-    } catch (error: any) {
-        return error.response || error.message
-    }
-}

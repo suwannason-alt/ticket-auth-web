@@ -43,6 +43,21 @@
         "note": {
             "noteTitle": "Note",
             "noteContent": "If not found any service, Please contact your admin to grant permission any company."
+        },
+        "company": {
+            "createCompany": "Create Company Data",
+            "titleCompany": "Add Company Data",
+            "companyName": "Company Name",
+            "address": "Company Address",
+            "email": "Company Email",
+            "city": "City",
+            "state": "State",
+            "postalCode": "Postal Code",
+            "country": "Country",
+            "phone": "Company Phone",
+            "website": "Company Website",
+            "description": "Company Description",
+            "noCompany": "You don't have any company. Please create a company or contact your admin"
         }
     }
 }

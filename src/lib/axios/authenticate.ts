@@ -51,7 +51,10 @@ export default async function authenticated() {
         
         const token = Cookies.get(TOKEN_COOKIE_KEY);
         if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+            config.headers?.set(
+                'Authorization',
+                `Bearer ${token}`
+            );
         }
         return config
     }, (error) => {

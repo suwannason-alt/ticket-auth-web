@@ -10,6 +10,13 @@ import {
   Chip,
   Select,
   MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Grid,
+  TextField,
+  SelectChangeEvent
 } from '@mui/material';
 import {
   Info,
@@ -19,7 +26,8 @@ import {
 } from '@mui/icons-material';
 import { getLiffEnvironment } from '@/lib/liff';
 import { useAppSelector } from '@/lib/store';
-import { company, permissions } from '@/service/user.service';
+import { permissions, profile } from '@/service/user.service';
+import { company, createCompany, switchCompany } from '@/service/company.service';
 import { useTranslations } from 'next-intl';
 
 export default function DemoFeatures() {
@@ -27,42 +35,97 @@ export default function DemoFeatures() {
 
   const { user } = useAppSelector((state) => state.auth);
   const [services, setServices] = useState<any[]>([]);
-  const [companies, setCompanies] = useState([]);
-
-
+  const [companies, setCompanies] = useState<any[]>([]);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [currentCompany, setCurrentCompany] = useState<string>(user.company || '');
 
+  const initialFormData  = {
+    name: '',
+    address: '',
+    telephone: '',
+    website: '',
+    email: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: '',
+    description: '',
+  };
+  const [formData, setFormData] = useState(initialFormData);
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = event.target;
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const resetForm = () => {
+  setFormData(initialFormData);
+};
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await createCompany(formData);
+      await getUserCompany();
+      await getServicePermissions();
+      const currentProfile = await profile();
+      setCurrentCompany(currentProfile.data.company);
+      resetForm();
+      setShowLogoutDialog(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const liffEnv = getLiffEnvironment();
-  useEffect(() => {
+  
     const getServicePermissions = async () => {
       try {
         const services = await permissions();
         setServices(services.data);
       } catch (error) {
-        console.error("Error fetching permissions:", error);
+        console.error('Error fetching permissions:', error);
       }
-    }
-    const getUserCompany = async () => {
-      try {
-        const companyUser = await company();
-
-        setCompanies(companyUser.data);
-
-      } catch (error) {
-        console.error("Error fetching companies:", error);
+    };
+  const getUserCompany = async () => {
+    try {
+      const companyUser = await company();
+      const currentProfile = await profile();
+      setCompanies(companyUser.data);
+      if ( user.company !== null ) {
+        setCurrentCompany(currentProfile.data.company);
       }
+    } catch (error) {
+      console.error('Error fetching companies:', error);
     }
+  };
 
+  useEffect(() => {
     if (user && user.uuid) {
       getUserCompany();
-      getServicePermissions();
+      if ( user.company !== null ) {
+        getServicePermissions();
+      }
     }
+  }, [user]);
 
-  }, [user])
-
-  const handleCompanyChange = (event: any) => {
+  const handleCompanyChange = async (
+    event: SelectChangeEvent<string>
+  ) => {
     const selectedCompanyUuid = event.target.value;
-  }
+    setCurrentCompany(selectedCompanyUuid);
+    await switchCompany(selectedCompanyUuid);
+    await getUserCompany();
+    await getServicePermissions();
+  };
+
+
   const routeService = (serviceName: string) => {
     let pathTo = '';
     if (serviceName.toLowerCase().includes('admin')) {
@@ -72,6 +135,18 @@ export default function DemoFeatures() {
     }
     window.location.href = pathTo;
   }
+
+  const handleCompany = async (openDialog?: boolean) => {
+    try {
+      if (openDialog) {
+        setShowLogoutDialog(true);
+        return;
+      }
+      setShowLogoutDialog(false);
+    } catch (error) {
+      console.error('Create company failed:', error);
+    }
+  };
 
   return (
     <Box sx={{ mt: 3 }}>
@@ -87,27 +162,55 @@ export default function DemoFeatures() {
           transition: 'all 0.3s ease',
         }}>
           <CardContent>
-            <Typography variant="h6" gutterBottom>
-              <Info sx={{ mr: 1, verticalAlign: 'middle' }} />
-              {t('environment.selectCompany')} ({companies.length} {t('environment.available')})
-            </Typography>
-            <Select
-              onChange={handleCompanyChange}
-              fullWidth
-              value={user.company || ''}
-              disabled={companies.length === 1}
-            >
-              {companies.map((comp: any) => (
-                <MenuItem key={comp.uuid} value={comp.uuid}>{comp.name}</MenuItem>
-              ))}
-            </Select>
+            <Grid size={{ xs: 12 }}>
+              <Typography variant="h6" gutterBottom>
+                <Info sx={{ mr: 1, verticalAlign: 'middle' }} />
+                {t('environment.selectCompany')} ({companies.length} {t('environment.available')})
+              </Typography>
+            </Grid>
+            <Grid size={{ xs: 12 }} style={{ display: 'flex', justifyContent: 'end' }}>
+              {companies.length > 0 ? (
+                <Button
+                  variant="contained"
+                  onClick={() => handleCompany(true)}
+                  disabled={false}
+                  sx={{ mt: 2, mb: 2,  }}
+                >
+                  {t('company.createCompany')}
+                </Button>
+              ) : 
+              <Button
+                  fullWidth
+                  variant="contained"
+                  onClick={() => handleCompany(true)}
+                  disabled={false}
+                  sx={{ mt: 2, mb: 2 }}
+                >
+                  {t('company.createCompany')}
+                </Button>
+              }
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              {companies.length > 0 ? (
+                <Select
+                  onChange={handleCompanyChange}
+                  fullWidth
+                  value={currentCompany}
+                  disabled={companies.length === 1}
+                >
+                  {companies.map((comp: any) => (
+                    <MenuItem key={comp.uuid} value={comp.uuid}>{comp.name}</MenuItem>
+                  ))}
+                </Select>
+              ) : null}
+            </Grid>
           </CardContent>
         </Card>
       </Box>
 
       <Box sx={{
         display: 'grid',
-        gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+        gridTemplateColumns: { xs: '1fr', md: services.length === 0 ? '1fr' : 'repeat(2, 1fr)' },
         gap: 2,
         mb: 3,
       }}>
@@ -138,6 +241,24 @@ export default function DemoFeatures() {
             </CardContent>
           </Card>
         ))}
+        {
+          services.length === 0 && (
+            <Card sx={{
+              height: '100%',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: 4,
+              },
+              transition: 'all 0.3s ease',
+            }}>
+              <CardContent sx={{ textAlign: 'center', py: 3 }}>
+                <Typography variant="h6" gutterBottom>
+                  {t('company.noCompany')}
+                </Typography>
+              </CardContent>
+            </Card>
+          )
+        }
       </Box>
 
       <Typography variant="h5" gutterBottom>
@@ -188,6 +309,78 @@ export default function DemoFeatures() {
           <strong>{t('note.noteTitle')}:</strong> {t('note.noteContent')}
         </Typography>
       </Box>
+      <Dialog
+        open={showLogoutDialog}
+        onClose={() => setShowLogoutDialog(false)}
+        maxWidth="lg"
+        fullWidth
+      >
+        <DialogTitle>
+          {t('company.titleCompany')}
+        </DialogTitle>
+        <form onSubmit={handleSubmit}>
+          <DialogContent style={{ marginTop: "20px" }}>
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 12, md: 6 }} sx={{ padding: "10px" }}>
+                <TextField id="outlined-basic" label={t('company.companyName')} variant="outlined" fullWidth size='small'
+                  name="name" value={formData.name} onChange={handleChange} required />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }} sx={{ padding: "10px" }}>
+                <TextField id="outlined-basic" label={t('company.address')} variant="outlined" fullWidth size='small' 
+                  name="address" value={formData.address} onChange={handleChange} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }} sx={{ padding: "10px" }}>
+                <TextField id="outlined-basic" label={t('company.email')} variant="outlined" fullWidth size='small' 
+                  name="email" value={formData.email} onChange={handleChange} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }} sx={{ padding: "10px" }}>
+                <TextField id="outlined-basic" label={t('company.phone')} variant="outlined" fullWidth size='small' 
+                  name="telephone" value={formData.telephone} onChange={handleChange} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }} sx={{ padding: "10px" }}>
+                <TextField id="outlined-basic" label={t('company.website')} variant="outlined" fullWidth size='small' 
+                  name="website" value={formData.website} onChange={handleChange} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }} sx={{ padding: "10px" }}>
+                <TextField id="outlined-basic" label={t('company.city')} variant="outlined" fullWidth size='small' 
+                  name="city" value={formData.city} onChange={handleChange} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }} sx={{ padding: "10px" }}>
+                <TextField id="outlined-basic" label={t('company.state')} variant="outlined" fullWidth size='small' 
+                  name="state" value={formData.state} onChange={handleChange} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }} sx={{ padding: "10px" }}>
+                <TextField id="outlined-basic" label={t('company.postalCode')} variant="outlined" fullWidth size='small' 
+                  name="postalCode" value={formData.postalCode} onChange={handleChange} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }} sx={{ padding: "10px" }}>
+                <TextField id="outlined-basic" label={t('company.country')} variant="outlined" fullWidth size='small' 
+                  name="country" value={formData.country} onChange={handleChange} />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }} sx={{ padding: "10px" }}>
+                <TextField id="outlined-basic" label={t('company.description')} variant="outlined" fullWidth size='small' 
+                  name="description" value={formData.description} onChange={handleChange} />
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="contained"
+              type="submit"
+            >
+              {t('signOut.confirm')}
+            </Button>
+            <Button
+              onClick={() => {
+                resetForm();
+                setShowLogoutDialog(false)
+              }}
+            >
+              {t('signOut.cancel')}
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </Box>
   );
 }
