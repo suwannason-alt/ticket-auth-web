@@ -21,7 +21,8 @@ export async function proxy(request: NextRequest) {
         return NextResponse.next();
     }
     
-    const destinationUrl = destinationHost + newPath;    
+    const destinationUrl = destinationHost + newPath;
+    
     return NextResponse.rewrite(destinationUrl);
 }
 
